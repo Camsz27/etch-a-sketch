@@ -21,13 +21,56 @@ html {
 h1 {
   text-align: center;
   font-size: 85;
+  height: 80px;
+  margin: 10px;
+}
+
+h2 {
+  margin: 10px;
+}
+
+h3 {
+  margin: 10px;
 }
 
 #gridContainer {
     display: grid;
     grid-template-rows: repeat(var(--grid-rows), var(--size-cells));
     grid-template-columns: repeat(var(--grid-cols), var(--size-cells));
-    height: 400px;
-    width: 400px;
+    height: 500px;
+    width: 500px;
+    padding: 0 460px 20px;
 }
 
+button {
+  text-align: center;
+  width: auto;
+  background-color: darkcyan;
+  height: 40px;
+  font-size: 13px;
+  font-family: 'Open Sans', sans-serif;
+  margin: 0 5px;
+}
+
+button:hover {
+  border: 2px solid black;
+  transform: scale(1.1);
+}
+
+.active {
+  border: 2px solid black;
+  transform: scale(1.1);
+}
+
+#buttonContainer {
+  text-align: center;
+}
+
+#slideContainer {
+  text-align: center;
+  margin: 20px;
+}
+
+input {
+  width: 200px;
+}

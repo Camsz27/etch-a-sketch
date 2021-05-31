@@ -4,7 +4,7 @@ makeGrid(40,40);
 const resetButton = document.querySelector('#reset');
 resetButton.addEventListener('click', resetBoard);
 
-const cells = document.querySelectorAll('.cell');
+cells = document.querySelectorAll('.cell');
 cells.forEach(cell => cell.addEventListener('mouseover', traditional));
 
 const eraserButton = document.querySelector('#eraser');
@@ -15,18 +15,29 @@ toggleButton.addEventListener('click', toggleGrid);
 
 const traditionalButton = document.querySelector('#traditional');
 traditionalButton.addEventListener('click', changeTraditional);
+traditionalButton.classList.add('active')
 
 const rainbowButton = document.querySelector('#rainbow');
 rainbowButton.addEventListener('click', changeRandom);
 
+const slider = document.querySelector('#myRange');
+let text = document.querySelector('h3');
+
+slider.oninput = function() {
+    text.textContent = this.value + 'x' + this.value;
+    makeGrid(this.value, this.value);
+    cells = document.querySelectorAll('.cell')
+    cells.forEach(cell => cell.addEventListener('mouseover', traditional));
+}
+
 function changeTraditional() {
     removeListeners();
     cells.forEach(cell => cell.addEventListener('mouseover', traditional));
+    traditionalButton.classList.add('active')
 }
 
 function traditional(e) {
     if (this.style.backgroundColor.match(/rgb/)) {
-        console.log('This happens');
         let rgb = this.style.backgroundColor.match(/\d+/g);
         rgb[0] = rgb[0] - 50;
         rgb[1] = rgb[1] - 50;
@@ -40,6 +51,7 @@ function traditional(e) {
 function changeRandom() {
     removeListeners();
     cells.forEach(cell => cell.addEventListener('mouseover', randomColor));
+    rainbowButton.classList.add('active');
 }
 
 function randomColor(e) {
@@ -52,6 +64,7 @@ function randomColor(e) {
 function changeEraser() {
     removeListeners();
     cells.forEach(cell => cell.addEventListener('mouseover', eraser));
+    eraserButton.classList.add('active');
 }
 
 function eraser(e) {
@@ -67,14 +80,9 @@ function toggleGrid() {
 }
 
 function makeGrid(rows, cols) {
-    if (rows > 100) {
-        rows = 100;
-        alert('Max number of rows is 100, input rows changed to 100');
-    } else if (cols > 100) {
-        alert('Max number of columns is 100, input columns changed to 100');
-        cols = 100;
-    }
-    let sizeCell = 400/rows;
+    let cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => cell.remove());
+    let sizeCell = 500/rows;
     gridContainer.style.setProperty('--grid-rows', rows);
     gridContainer.style.setProperty('--grid-cols', cols);
     gridContainer.style.setProperty('--size-cells', sizeCell+'px');
@@ -92,4 +100,7 @@ function removeListeners() {
     cells.forEach(cell => cell.removeEventListener('mouseover', eraser));
     cells.forEach(cell => cell.removeEventListener('mouseover', traditional));
     cells.forEach(cell => cell.removeEventListener('mouseover', randomColor));
+    eraserButton.classList.remove('active');
+    rainbowButton.classList.remove('active');
+    traditionalButton.classList.remove('active');
 }
