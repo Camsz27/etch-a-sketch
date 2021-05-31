@@ -1,25 +1,45 @@
 const gridContainer = document.querySelector('#gridContainer');
-makeGrid(60,60)
+makeGrid(40,40);
 
-const reset = document.querySelector('#reset')
-reset.addEventListener('click', resetBoard);
+const resetButton = document.querySelector('#reset');
+resetButton.addEventListener('click', resetBoard);
 
 const cells = document.querySelectorAll('.cell');
-cells.forEach(cell => cell.addEventListener('mouseover', darkerColor));
+cells.forEach(cell => cell.addEventListener('mouseover', traditional));
 
-function darkerColor(e) {
+const eraserButton = document.querySelector('#eraser');
+eraserButton.addEventListener('click', changeEraser);
+
+const toggleButton = document.querySelector('#toggleGrid');
+toggleButton.addEventListener('click', toggleGrid);
+
+const traditionalButton = document.querySelector('#traditional');
+traditionalButton.addEventListener('click', changeTraditional);
+
+const rainbowButton = document.querySelector('#rainbow');
+rainbowButton.addEventListener('click', changeRandom);
+
+function changeTraditional() {
+    removeListeners();
+    cells.forEach(cell => cell.addEventListener('mouseover', traditional));
+}
+
+function traditional(e) {
     if (this.style.backgroundColor.match(/rgb/)) {
         console.log('This happens');
         let rgb = this.style.backgroundColor.match(/\d+/g);
-        rgb[0] = rgb[0]/4;
-        rgb[1] = rgb[1]/4;
-        rgb[2] = rgb[2]/4;
+        rgb[0] = rgb[0] - 50;
+        rgb[1] = rgb[1] - 50;
+        rgb[2] = rgb[2] - 50;
         this.style.backgroundColor = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
     } else {
-        this.style.backgroundColor = 'rgb(255, 255, 255)';
+        this.style.backgroundColor = 'rgb(200, 200, 200)';
     }
-    //this.style.backgroundColor = 'rgb(255, 255, 255)';
-    //console.log(rgb);
+}
+
+function changeRandom() {
+    removeListeners();
+    cells.forEach(cell => cell.addEventListener('mouseover', randomColor));
 }
 
 function randomColor(e) {
@@ -29,8 +49,21 @@ function randomColor(e) {
     this.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`
 }
 
+function changeEraser() {
+    removeListeners();
+    cells.forEach(cell => cell.addEventListener('mouseover', eraser));
+}
+
+function eraser(e) {
+    this.style.backgroundColor = 'white';
+}
+
 function resetBoard() {
     cells.forEach(cell => cell.style.backgroundColor = 'white');
+}
+
+function toggleGrid() {
+    cells.forEach(cell => cell.classList.toggle('grid'));
 }
 
 function makeGrid(rows, cols) {
@@ -49,7 +82,14 @@ function makeGrid(rows, cols) {
         for (let col = 0; col < cols; col++) {
             const cell = document.createElement('div');
             cell.classList.add('cell');
+            cell.classList.add('grid');
             gridContainer.appendChild(cell);
         }
     }
+}
+
+function removeListeners() {
+    cells.forEach(cell => cell.removeEventListener('mouseover', eraser));
+    cells.forEach(cell => cell.removeEventListener('mouseover', traditional));
+    cells.forEach(cell => cell.removeEventListener('mouseover', randomColor));
 }

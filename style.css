@@ -5,13 +5,17 @@
 }
 
 html {
-    font-family: 'Wendy One';
-    background-color: lightgray;
-    color:darkcyan;
+  font-family: 'Open Sans', sans-serif;
+  background-color: lightgray;
+  color:darkcyan;
 }
 
 .cell {
   background-color: rgb(255, 255, 255);
+}
+
+.grid {
+  border: 0.01px solid grey;
 }
 
 h1 {
